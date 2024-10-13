@@ -1,6 +1,15 @@
 import streamlit as st
 import pandas as pd
 from supabase import create_client, Client
+import gdown
+
+id = "14LD9iisP2aqx9tmypqKq7lGMmC853Rwn"
+output = "archivo.csv"
+gdown.download(id=id, output=output)
+#df_clubs = pd.read_csv(output)
+df_clubs = pd.read_csv(output, index_col=0, sep=';', encoding='latin-1')
+st.write(df_clubs)
+
 
 
 url: str = "https://tvglznbmklajgnffgdok.supabase.co"
@@ -24,13 +33,14 @@ df = pd.DataFrame(
 )
 edited_df = st.data_editor(df, num_rows="dynamic")
 #*************************************************************
-with st.form("my_form"):
+with st.form("formulario_grabacion_partidos"):
     
     st.write("GRABACION DE PARTIDOS")
     
-    fecha = st.date_input('Fecha del Partido')
+    fecha = st.date_input('FECHA')
     hora = st.time_input('HORA')
-    competicion = st.selectbox('Competicion', ['LIGA','Torneo','Amistoso'], index=None, placeholder='seleccione una competicion')
+    campo = st.text_input('CAMPO')
+    competicion = st.selectbox('COMPETICION', ['LIGA','Torneo','Amistoso'], index=None, placeholder='Seleccione una competicion')
     
     col1, col2 = st.columns(2)
     with col1:
@@ -61,7 +71,13 @@ with st.form("my_form"):
 
     
     st.form_submit_button('Grabar Partido')
+#*************************************************************
 
+
+
+
+
+#*************************************************************
 # This is outside the form
 st.write(fecha,hora,competicion,equipo_atco,goles_atco,equipo_rival,goles_rival)
 
